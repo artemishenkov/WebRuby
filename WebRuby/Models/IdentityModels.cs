@@ -24,7 +24,8 @@ namespace WebRuby.Models
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
-
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Task> Tasks { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

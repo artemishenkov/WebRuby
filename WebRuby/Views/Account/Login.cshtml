@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Log in";
 }
+<h4 class="text-center">SIMPLE TODO LIST</h4>
 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <div class="col-4 offset-4" style="display:flex; flex-direction:column; justify-content:center; background-color:#f4f5f7; padding:20px; border-radius:10px;">
@@ -26,7 +27,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="margin: 0px">
             <div class="col-md-offset-2 col-md-12">
                 <div style="display:flex; flex-direction:row; justify-content:space-between">
                     <div class="custom-control custom-checkbox">

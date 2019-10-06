@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -17,12 +18,70 @@ namespace WebRuby.Controllers
         private ApplicationUserManager _userManager;
         public ActionResult TaskBoard()
         {
-            return View();
+            return View(new TaskBoard());
         }
         public ManageController()
         {
         }
+        public ActionResult UpdatePriority(int taskId, bool priority)
+        {
+            var db = new ApplicationDbContext();
+            int sign = priority ? 1 : -1;
+            var task = db.Tasks.Where(m => m.Id == taskId).First();
+            var closest = db.Tasks.Where(m => m.Priority == task.Priority + sign).FirstOrDefault();
+            if (closest != null)
+            {
+                closest.Priority -= sign;
+                task.Priority += sign;
+                db.SaveChanges();
+            }
 
+            return PartialView("~/Views/PartialViews/TasksList.cshtml", new TasksListViewModel(task.ProjectId));
+        }
+        public ActionResult DeleteTask(int taskId)
+        {
+            var db = new ApplicationDbContext();
+            var task = db.Tasks.Where(t => t.Id == taskId).First();
+            int projectId = task.ProjectId;
+            db.Tasks.Remove(task);
+            db.SaveChanges();
+            return PartialView("~/Views/PartialViews/TasksList.cshtml", new TasksListViewModel(projectId));
+        }
+        public ActionResult DeleteProject(int projectId)
+        {
+            var db = new ApplicationDbContext();
+            var project = db.Projects.Where(p => p.Id == projectId).First();
+            db.Projects.Remove(project);
+            db.SaveChanges();
+            return PartialView("~/Views/PartialViews/ProjectsList.cshtml", new ProjectsListViewModel());
+        }
+        public ActionResult AddTask(string name, int projectId)
+        {
+            var db = new ApplicationDbContext();
+            db.Tasks.Add(new Models.Task
+            {               
+                Name = name,
+                Priority = db.Tasks.Count(),
+                Status = false,
+                ProjectId = projectId,
+            });
+            db.SaveChanges();
+            return PartialView("~/Views/PartialViews/TasksList.cshtml", new TasksListViewModel(projectId));
+        }
+        
+        public ActionResult AddProject(string deadline, string name)
+        {
+            var db = new ApplicationDbContext();
+            var date = DateTime.Parse(deadline);
+            db.Projects.Add(new Project
+            {
+                Deadline = date,
+                Name = name,
+                UserId = Helper.GetCurrentUserId().ToString(),
+            });
+            db.SaveChanges();
+            return PartialView("~/Views/PartialViews/ProjectsList.cshtml", new ProjectsListViewModel());
+        }
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;

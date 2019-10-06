@@ -1,0 +1,10 @@
+﻿@using WebRuby.Models
+@model ProjectsListViewModel
+
+@foreach (var i in Model.Projects)
+{
+    Html.RenderPartial("~/Views/PartialViews/Project.cshtml", i);
+    <br />
+    <br />
+    <br />
+}

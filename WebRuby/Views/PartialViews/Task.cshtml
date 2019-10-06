@@ -1,0 +1,35 @@
+﻿@using WebRuby.Models
+@model TaskViewModel
+<div class="task-row" id="task#@Model.Task.Id">
+    <div class="task-row-leftSide">
+        <div class="task-checkbox">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="customCheck#@Model.Task.Id" checked="" name="status">
+                <label class="custom-control-label" for="customCheck#@Model.Task.Id"></label>
+            </div>
+        </div>
+        <p class="text-center text-dark taskName">@Model.Task.Name</p>
+    </div>
+    <div class="task-row-rightSide text-black-50">
+        <div class="change-priority">
+            <i class="fas fa-sort-up" style=""></i>
+
+            <i style="">—</i>
+            <i class="fas fa-sort-down" style=""></i>
+        </div>
+        <span class="separator">|</span>
+        <i class="far fa-edit" name="taskEdit"></i>
+        <span class="separator">|</span>
+        <i class="far fa-trash-alt" name="taskTrash"></i>
+    </div>
+</div>
+<script>
+    $("body").on('click', '[name=taskTrash]', function () {
+        var taskForm = $(this).parent().parent();
+        var id = taskForm.attr('id').split('task#')[1];
+        $(taskForm).load('@Url.Action("DeleteTask", "Manage")', { taskId: id });
+    });
+    $("body").on('click', '[name=taskEdit]', function () {
+        alert('taskEdit');
+    });
+</script>

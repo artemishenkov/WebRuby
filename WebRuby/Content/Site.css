@@ -63,9 +63,132 @@ textarea {
     justify-content: space-between;
     background-color: #ecf0f1;
     padding: 10px;
+    margin-top:0px;
+}
+.add-task-header {
+    width: 100%;
+    background-color: #325D88;
+    color:white;
+    font-size:25px;
+    padding:12px;
+    justify-content:space-between;
+   
+}
+i{
+    cursor:pointer;
 }
 body {
     padding-top: 12px;
     background-size: 100%;
     background-image: url('../Images/Background/loginbackground.jpg');
+}
+
+#form-block {
+    display: none;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+    
+}
+
+#form-block.open {
+   display: block;
+}
+
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(17, 17, 17, 0.5);
+    transition: all 0.5s ease;
+    display: none;
+}
+
+.popup-open {
+    display: block;
+}
+
+.popup-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ecf0f1;
+    border-radius: 10px;
+    max-width: 588px;
+    width: 380px;
+}
+
+.popup-wrapper {
+    padding: 40px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.task-row {
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.task-checkbox {
+    padding: 13px 13px 13px 21px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.task-row-leftSide {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.task-row-rightSide {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid darkgray;
+    padding: 13px;
+}
+.taskName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    border-left: 1px solid darkgray;
+    padding: 13px;
+}
+.task-operations {
+    display: flex;
+    flex-direction: column;
+    margin-right: 14px;
+}
+.change-priority{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+.separator{
+    margin:0px 13px;
+}
+input:active, input:focus {
+    outline: none;
+}
+
+input::-moz-focus-inner {
+    border: 0;
+}
+
+.textinput{
+    cursor:default;
 }

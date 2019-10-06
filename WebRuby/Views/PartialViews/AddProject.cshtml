@@ -1,0 +1,39 @@
+﻿@using WebRuby.Models
+@model AddProjectViewModel
+
+
+<div class="popup">
+    <div class="popup-container">
+        <div class="popup-wrapper">
+            <div id="form-block">
+                <div class="form-group">
+                    <label class="col-form-label" for="projectName">Project name</label>
+                    <input type="text" class="form-control" placeholder="Project name..." id="projectName" style="max-width:unset; width:300px">
+
+                    <label class="col-form-label" for="deadline">Deadline</label>
+                    <div class="datepicker-here" id="deadline" data-timepicker="true"></div>
+                </div>
+
+                <div class="alert alert-dismissible alert-light" style="display:none" id="errorDatetime">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Error!</strong> Wrong datetime choice.
+                </div>
+                <div class="alert alert-dismissible alert-light" style="display:none" id="errorName">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Error!</strong> There is already an existing project with your chosen name.
+                </div>
+                <div class="row justify-content-between" style="margin:0px">
+                    <button class="btn btn-primary" style="width:40%" id="submitBtn">Add</button>
+                    <button class="btn btn-primary" style="width:40%" id="cancel-project-btn" inner>Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+   
+
+
+</script>

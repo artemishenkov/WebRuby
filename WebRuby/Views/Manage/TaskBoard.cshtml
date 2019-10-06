@@ -1,18 +1,80 @@
-﻿
+﻿@using WebRuby.Models
+@using WebRuby.Extension
+@model TaskBoard
 @{
     ViewBag.Title = "TaskBoard";
 }
 <h3 class="text-center">SIMPLE TODO LIST</h3>
 <h5 class="text-center">FROM RUBY GARAGE</h5>
-<div class="add-task-form">
+<div id="projectsList">
+    @{ Html.RenderPartial("~/Views/PartialViews/ProjectsList.cshtml", Model.ProjectsList); }
+    
+</div>
+<div style="display:flex; flex-direction:row;justify-content:center; margin-top:25px; ">
+    @Html.Button(Model.AddProjectBtn.InnerHtml, Model.AddProjectBtn.HtmlAttributes)
+    
+</div>
+<script>
+    
+    var addProjectBtn = document.querySelector('#add-project-btn');
+    addProjectBtn.addEventListener('click', () => {
+        submitBtn = document.querySelector('#submitBtn');
+  
+    submitBtn.addEventListener('click', () => {
 
-    <i class="fas fa-plus add-task-plus"></i>
-    <input class="form-control add-task-input" type="text" placeholder="Start typing here to create a task...">
-    <button type="button" class="btn btn-success add-task-btn">Add task</button>
-</div>
-<div style="display:flex; flex-direction:row;justify-content:center; margin-top:25px;">
-    <button type="button" class="btn-lg btn-primary" style="">
-        <i class="fas fa-plus add-project-plus"></i>
-        <span>Add TODO List</span>
-    </button>
-</div>
+        var date = document.getElementsByClassName("datepicker--cell datepicker--cell-day -selected-")[0];
+        var day = $(date).attr('data-date');
+        var year = $(date).attr('data-year');
+        var month = $(date).attr('data-month');
+        var date = new Date(year, month, day, 2, 3, 4, 567);
+        var hours = document.getElementsByClassName("datepicker--time-current-hours")[0].textContent;
+        var minutes = document.getElementsByClassName("datepicker--time-current-minutes")[0].textContent;
+       
+        var projectName = $('#projectName').val();
+        var allNames = [];
+        @{
+            foreach(var i in Model.ProjectsList.Projects) {
+                @:allNames.push('@i.Project.Name');
+                
+           }
+
+        }
+        var dataVerification = true;
+        if (new Date() > new Date(year, month, day, hours, minutes, 0, 0)) {
+            $('#errorDatetime').show();
+            dataVerification = false;
+        }
+
+        if (allNames.length != 0 && allNames.indexOf(projectName) != -1) {
+            $('#errorName').show();
+            dataVerification = false;
+        }
+        if (dataVerification) {
+            $('#projectsList').load('@Url.Action("AddProject", "Manage")', {
+                deadline: month + '/' + day + '/' + year + ' ' + hours + ':' + minutes+ ':' + '00', name: projectName
+            });
+            form.classList.remove('open');
+            popup.classList.remove('popup-open');
+        }
+    });
+    });
+     
+</script>
+@{
+    Html.RenderPartial("~/Views/PartialViews/AddProject.cshtml", Model.AddProjectModel);
+}
+<script>
+    const showButton = document.querySelector('#add-project-btn');
+    const closeButton = document.querySelector('#cancel-project-btn');
+    const form = document.querySelector('#form-block');
+    const popup = document.querySelector('.popup');
+
+    showButton.addEventListener('click', () => {
+        form.classList.add('open');
+        popup.classList.add('popup-open');
+    });
+    closeButton.addEventListener('click', () => {
+        form.classList.remove('open');
+        popup.classList.remove('popup-open');
+    });
+</script>
