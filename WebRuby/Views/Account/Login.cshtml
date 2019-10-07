@@ -6,7 +6,8 @@
 <h4 class="text-center">SIMPLE TODO LIST</h4>
 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-    <div class="col-4 offset-4" style="display:flex; flex-direction:column; justify-content:center; background-color:#f4f5f7; padding:20px; border-radius:10px;">
+<div style="display:flex; flex-direction:column; align-items:center">
+    <div class="login-form" style="">
 
 
         @Html.AntiForgeryToken()
@@ -46,20 +47,9 @@
     <div class="form-group text-center pt-lg-3">
         <input type="submit" value="Log in" class="btn btn-primary" />
     </div>
+</div>
 }
-@*<div class="row">
-        <div class="col-md-8 offset-2 justify-content-center">
-            <section id="loginForm">
 
-            </section>
-        </div>
-
-    </div>*@
-@*<div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>*@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

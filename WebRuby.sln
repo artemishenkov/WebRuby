@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRuby", "WebRuby\WebRuby.csproj", "{8C82498D-597F-4860-B0A6-B0D183F024A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebRuby.Tests", "WebRuby.Tests\WebRuby.Tests.csproj", "{4AAD3BD4-02AB-47A1-A605-31276D5D5E02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8C82498D-597F-4860-B0A6-B0D183F024A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C82498D-597F-4860-B0A6-B0D183F024A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C82498D-597F-4860-B0A6-B0D183F024A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AAD3BD4-02AB-47A1-A605-31276D5D5E02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AAD3BD4-02AB-47A1-A605-31276D5D5E02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AAD3BD4-02AB-47A1-A605-31276D5D5E02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AAD3BD4-02AB-47A1-A605-31276D5D5E02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

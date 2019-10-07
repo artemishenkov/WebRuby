@@ -1,69 +1,27 @@
 ﻿@using WebRuby.Models
 @using WebRuby.Extension
 @model ProjectViewModel
-<div class="add-task-header" style="display:flex; flex-direction:row">
-    <div style="display:flex; flex-direction:row; align-items:center">
-        <i class="far fa-calendar-alt"  style="margin-right:13px; font-size:30px;color:#2C3E50"></i>
-        <input class="textinput" readonly="" style="background-color: #325D88; border:none; color:white" value="@Model.Project.Name"/>
-    @*<p style="margin:0px">@Model.Project.Name</p>*@
+<div class="project-form" id="project#@Model.Project.Id">
+    <div class="add-task-header" style="display:flex; flex-direction:row">
+        <div style="display:flex; flex-direction:row; align-items:center">
+            <i class="far fa-calendar-alt poster" style="margin-right:13px; font-size:30px;color:#2C3E50">
+                <span class="datepicker-here descr" data-timepicker="true" />
+            </i>
+            <input class="textinput" readonly="" style="background-color: #325D88; border:none; color:white" value="@Model.Project.Name" />
+        </div>
+        <div style="color:lightgray;display:flex; flex-direction:row; align-items:center; justify-content:center">
+            <i class="far fa-edit" name="projectEdit"></i>
+            <p style="margin:0px 10px">|</p>
+            <i class="far fa-trash-alt" name="projectTrash"></i>
+        </div>
     </div>
-    <div style="color:lightgray;display:flex; flex-direction:row; align-items:center; justify-content:center">
-        <i class="far fa-edit" name="projectEdit"></i>
-        <p style="margin:0px 10px">|</p>
-        <i class="far fa-trash-alt" name="projectTrash"></i>
-    </div>
-</div>
 
-    <div class="add-task-form" id="project#@Model.Project.Id">
+    <div class="add-task-form">
         <i class="fas fa-plus add-task-plus"></i>
         @Html.Input(Model.AddTaskInput.HtmlAttributes)
         @Html.Button(Model.AddTaskBtn.InnerHtml, Model.AddTaskBtn.HtmlAttributes)
-    </div> 
-<div class="tasksList">
-    @{Html.RenderPartial("~/Views/PartialViews/TasksList.cshtml", Model.Tasks); }
+    </div>
+    <div class="tasksList">
+        @{Html.RenderPartial("~/Views/PartialViews/TasksList.cshtml", Model.Tasks); }
+    </div>
 </div>
-<script>
-    $(".fas.fa-sort-up").unbind("click").click(function () {
-       
-    });
-    //$(".fas.fa-sort-down").unbind("click").click(function () {
-
-    //});
-    $("#deleteTask").unbind("click").click(function () {
-
-    });
-    function changePriority(priority, taskId, element) {
-        $(element).load('@Url.Action("UpdatePriority", "Manage")', { taskId: taskId, priority: priority });
-    }
-    function getParams(element) {
-        var taskRow = $(element).closest('.task-row');
-        var taskId = taskRow.attr('id').split('task#')[1];
-        return [taskRow, taskId];
-    }
-    $(document).ready(function () {
-        $("body").on('click', '.fas.fa-sort-down', function () {
-            changePriority(false, getParams(this)[1], getParams(this)[0].closest('.tasksList'));        
-        });
-        $("body").on('click', '.fas.fa-sort-up', function () {
-            changePriority(true, getParams(this)[1], getParams(this)[0].closest('.tasksList'));
-        });
-    });
-    @*$('.fas.fa-sort-down').on('click', function () {
-        
-        var taskRow = $(this).closest('.task-row');
-        var taskId = taskRow.attr('id').split('task#')[1];
-        $(taskRow.closest('.tasksList')).load('@Url.Action("UpdatePriority", "Manage")', { taskId: taskId, priority: false });
-    });*@
-   
-
-    $(".btn.btn-success.add-task-btn").unbind("click").click(function () {
-        var projectForm = $(this).parent();
-            var projectId = +projectForm.attr('id').split('project#')[1];
-            var taskName = projectForm.children('input');
-        var name = $(taskName).val();
-        var tasksList = projectForm.next();
-        if (name.length > 0)
-            $(tasksList).load('@Url.Action("AddTask", "Manage")', { name: name, projectId: projectId });       
-    });
-        
-</script>

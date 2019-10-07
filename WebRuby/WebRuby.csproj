@@ -257,6 +257,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Background\grey-wood-pane.png" />
     <Content Include="Images\Background\loginbackground.jpg" />
     <Content Include="Images\Background\workspace1.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,13 +27,18 @@ namespace WebRuby.Controllers
         public ActionResult UpdatePriority(int taskId, bool priority)
         {
             var db = new ApplicationDbContext();
-            int sign = priority ? 1 : -1;
             var task = db.Tasks.Where(m => m.Id == taskId).First();
-            var closest = db.Tasks.Where(m => m.Priority == task.Priority + sign).FirstOrDefault();
+            var taskd = db.Tasks.ToList();
+            Models.Task closest;
+            if (!priority)
+                closest = db.Tasks.Where(m => m.Priority < task.Priority).OrderByDescending(m => m.Priority).FirstOrDefault();
+            else closest = db.Tasks.Where(m => m.Priority > task.Priority).OrderBy(m => m.Priority).FirstOrDefault();
             if (closest != null)
             {
-                closest.Priority -= sign;
-                task.Priority += sign;
+
+                int temp = closest.Priority;
+                closest.Priority = task.Priority;
+                task.Priority = temp;
                 db.SaveChanges();
             }
 
@@ -43,9 +49,35 @@ namespace WebRuby.Controllers
             var db = new ApplicationDbContext();
             var task = db.Tasks.Where(t => t.Id == taskId).First();
             int projectId = task.ProjectId;
-            db.Tasks.Remove(task);
+                       
+           db.Tasks.Remove(task);
             db.SaveChanges();
+
             return PartialView("~/Views/PartialViews/TasksList.cshtml", new TasksListViewModel(projectId));
+        }
+        public EmptyResult ChangeProjectName(int projectId, string name)
+        {
+            var db = new ApplicationDbContext();
+            var project = db.Projects.Where(p => p.Id == projectId).First();
+            project.Name = name;
+            db.SaveChanges();
+            return new EmptyResult();
+        }
+        public EmptyResult UpdateStatus(int taskId, bool status)
+        {
+            var db = new ApplicationDbContext();
+            var task = db.Tasks.Where(t => t.Id == taskId).First();
+            task.Status = status;
+            db.SaveChanges();
+            return new EmptyResult();
+        }
+        public EmptyResult ChangeTaskName(int taskId, string name)
+        {
+            var db = new ApplicationDbContext();
+            var task = db.Tasks.Where(t => t.Id == taskId).First();
+            task.Name = name;
+            db.SaveChanges();
+            return new EmptyResult();
         }
         public ActionResult DeleteProject(int projectId)
         {
@@ -61,7 +93,7 @@ namespace WebRuby.Controllers
             db.Tasks.Add(new Models.Task
             {               
                 Name = name,
-                Priority = db.Tasks.Count(),
+                Priority = db.Tasks.Count() == 0 ? 0 : db.Tasks.Select(p => p.Priority).Max() + 1,
                 Status = false,
                 ProjectId = projectId,
             });
@@ -72,14 +104,22 @@ namespace WebRuby.Controllers
         public ActionResult AddProject(string deadline, string name)
         {
             var db = new ApplicationDbContext();
-            var date = DateTime.Parse(deadline);
-            db.Projects.Add(new Project
+            try
             {
-                Deadline = date,
-                Name = name,
-                UserId = Helper.GetCurrentUserId().ToString(),
-            });
-            db.SaveChanges();
+                var date = DateTime.Parse(deadline);
+                db.Projects.Add(new Project
+                {
+                    Deadline = date,
+                    Name = name,
+                    UserId = Helper.GetCurrentUserId().ToString(),
+                });
+                db.SaveChanges();
+            }
+            catch(System.FormatException)
+            {
+
+            }
+            
             return PartialView("~/Views/PartialViews/ProjectsList.cshtml", new ProjectsListViewModel());
         }
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)

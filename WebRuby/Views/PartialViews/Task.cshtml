@@ -4,11 +4,19 @@
     <div class="task-row-leftSide">
         <div class="task-checkbox">
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="customCheck#@Model.Task.Id" checked="" name="status">
+                <input type="checkbox" class="custom-control-input" id="customCheck#@Model.Task.Id" 
+                       @{
+                           if (Model.Task.Status)
+                           {
+                               @:checked=""
+                           }
+                       }  name="status">
                 <label class="custom-control-label" for="customCheck#@Model.Task.Id"></label>
             </div>
         </div>
-        <p class="text-center text-dark taskName">@Model.Task.Name</p>
+        <div class="taskName">
+            <input class="text-dark task-input" readonly="" value="@Model.Task.Name">
+        </div>
     </div>
     <div class="task-row-rightSide text-black-50">
         <div class="change-priority">
@@ -23,13 +31,3 @@
         <i class="far fa-trash-alt" name="taskTrash"></i>
     </div>
 </div>
-<script>
-    $("body").on('click', '[name=taskTrash]', function () {
-        var taskForm = $(this).parent().parent();
-        var id = taskForm.attr('id').split('task#')[1];
-        $(taskForm).load('@Url.Action("DeleteTask", "Manage")', { taskId: id });
-    });
-    $("body").on('click', '[name=taskEdit]', function () {
-        alert('taskEdit');
-    });
-</script>

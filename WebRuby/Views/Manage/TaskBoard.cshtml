@@ -8,18 +8,18 @@
 <h5 class="text-center">FROM RUBY GARAGE</h5>
 <div id="projectsList">
     @{ Html.RenderPartial("~/Views/PartialViews/ProjectsList.cshtml", Model.ProjectsList); }
-    
+
 </div>
 <div style="display:flex; flex-direction:row;justify-content:center; margin-top:25px; ">
     @Html.Button(Model.AddProjectBtn.InnerHtml, Model.AddProjectBtn.HtmlAttributes)
-    
+
 </div>
 <script>
-    
+
     var addProjectBtn = document.querySelector('#add-project-btn');
     addProjectBtn.addEventListener('click', () => {
         submitBtn = document.querySelector('#submitBtn');
-  
+
     submitBtn.addEventListener('click', () => {
 
         var date = document.getElementsByClassName("datepicker--cell datepicker--cell-day -selected-")[0];
@@ -29,13 +29,13 @@
         var date = new Date(year, month, day, 2, 3, 4, 567);
         var hours = document.getElementsByClassName("datepicker--time-current-hours")[0].textContent;
         var minutes = document.getElementsByClassName("datepicker--time-current-minutes")[0].textContent;
-       
+
         var projectName = $('#projectName').val();
         var allNames = [];
         @{
             foreach(var i in Model.ProjectsList.Projects) {
                 @:allNames.push('@i.Project.Name');
-                
+
            }
 
         }
@@ -44,8 +44,7 @@
             $('#errorDatetime').show();
             dataVerification = false;
         }
-
-        if (allNames.length != 0 && allNames.indexOf(projectName) != -1) {
+        if ((allNames.length != 0 && allNames.indexOf(projectName) != -1) || projectName.length == 0) {
             $('#errorName').show();
             dataVerification = false;
         }
@@ -58,7 +57,7 @@
         }
     });
     });
-     
+
 </script>
 @{
     Html.RenderPartial("~/Views/PartialViews/AddProject.cshtml", Model.AddProjectModel);
@@ -76,5 +75,108 @@
     closeButton.addEventListener('click', () => {
         form.classList.remove('open');
         popup.classList.remove('popup-open');
+    });
+
+</script>
+<script>
+    $(document).on('click', '[name=projectTrash]', function () {
+        var projectForm = $(this).closest('.project-form');
+      var id = projectForm.attr('id').split('project#')[1];
+      var projectsList = projectForm.closest('#projectsList');
+      $(projectsList).load('@Url.Action("DeleteProject", "Manage")', { projectId: id });
+    });
+
+    $(document).on('click', '[name=projectEdit]', function () {
+       var input = $(this).parent().prev().children('input');
+        input.removeAttr('readonly');
+
+        $(input).focus();
+        input.select();
+        $(input).blur(function () {
+            if ($(this).val().length > 0) {
+                var projectForm = $(this).closest('.project-form');
+                var id = projectForm.attr('id').split('project#')[1];
+                $.ajax({
+                    method: "POST", // метод HTTP, используемый для запроса
+                    url: '@Url.Action("ChangeProjectName", "Manage")', // строка, содержащая URL адрес, на который отправляется запрос
+                    data: { // данные, которые будут отправлены на сервер
+                        projectId: id,
+                        name: $(input).val()
+                    },
+                })
+                input.attr('readonly', '');
+            }
+            else $(input).focus();
+        });
+    });
+
+    function changePriority(priority, taskId, element) {
+        $(element).load('@Url.Action("UpdatePriority", "Manage")', { taskId: taskId, priority: priority });
+    }
+    function getParams(element) {
+        var taskRow = $(element).closest('.task-row');
+        var taskId = taskRow.attr('id').split('task#')[1];
+        return [taskRow, taskId];
+        }
+        $(document).on('click', '.fas.fa-sort-down', function () {
+            changePriority(false, getParams(this)[1], getParams(this)[0].closest('.tasksList'));
+        });
+        $(document).on('click', '.fas.fa-sort-up', function () {
+            changePriority(true, getParams(this)[1], getParams(this)[0].closest('.tasksList'));
+        });
+        $(document).on('click', '.btn.btn-success.add-task-btn', function () {
+             var projectForm = $(this).closest('.project-form');
+        var projectId = +projectForm.attr('id').split('project#')[1];
+        var taskName = projectForm.find('.form-control.add-task-input').val();
+        var tasksList = projectForm.find('.tasksList');
+        if (taskName.length > 0)
+            $(tasksList).load('@Url.Action("AddTask", "Manage")', { name: taskName, projectId: projectId });
+        });
+
+</script>
+<script>
+        $(document).on('click', '[name=taskTrash]', function () {
+            var taskForm = $(this).closest('.task-row');
+        var id = taskForm.attr('id').split('task#')[1];
+        $(taskForm.closest('.tasksList')).load('@Url.Action("DeleteTask", "Manage")', { taskId: id });
+        });
+        $(document).on('click', '[name=taskEdit]', function () {
+            var input = $(this).parent().prev().children('.taskName').children('input');
+        input.removeAttr('readonly');
+
+        $(input).focus();
+        input.select();
+            $(input).blur(function () {
+                if ($(this).val().length > 0) {
+                    var taskForm = $(this).closest('.task-row');
+                    var id = taskForm.attr('id').split('task#')[1];
+                    $.ajax({
+                        method: "POST",
+                        url: '@Url.Action("ChangeTaskName", "Manage")',
+                        data: {
+                            taskId: id,
+                            name: input.val()
+                        },
+                    })
+                    input.attr('readonly', '');
+                }
+                else {
+                    $(input).focus();
+                }
+            });
+        });
+
+</script>
+<script>
+            $(document).on('change', 'input:checkbox', function () {
+        var id = $(this).closest('.task-row').attr('id').split('task#')[1];
+        $.ajax({
+                    method: "POST",
+                    url: '@Url.Action("UpdateStatus", "Manage")',
+                    data: {
+                        taskId: id,
+                        status: $(this).prop("checked")
+                    },
+                })
     });
 </script>

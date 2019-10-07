@@ -79,8 +79,8 @@ i{
 }
 body {
     padding-top: 12px;
-    background-size: 100%;
-    background-image: url('../Images/Background/loginbackground.jpg');
+    /*background-size: 100%;*/
+    background-image: url('../Images/Background/grey-wood-pane.png');
 }
 
 #form-block {
@@ -166,6 +166,13 @@ body {
     margin: 0px;
     border-left: 1px solid darkgray;
     padding: 13px;
+    
+    
+}
+.task-input {
+    background-color: whitesmoke;
+    border: none;
+    cursor:default;
 }
 .task-operations {
     display: flex;
@@ -191,4 +198,34 @@ input::-moz-focus-inner {
 
 .textinput{
     cursor:default;
+}
+.far fa-calendar-alt{
+
+}
+.poster {
+    
+}
+
+.descr {
+    display: none;
+    margin-left: 25px;
+    padding: 10px;
+    margin-top: 17px;   
+}
+
+.poster:hover .descr {
+    display: block;
+    position: absolute;
+    top: 120px;
+    z-index: 9999;
+    width: 400px;
+}
+.login-form {
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #f4f5f7;
+    padding: 20px;
+    border-radius: 10px;
 }
