@@ -21,9 +21,6 @@ namespace WebRuby.Controllers
         {
             return View(new TaskBoard());
         }
-        public ManageController()
-        {
-        }
         public ActionResult UpdatePriority(int taskId, bool priority)
         {
             var db = new ApplicationDbContext();
@@ -99,33 +96,35 @@ namespace WebRuby.Controllers
             });
             db.SaveChanges();
             return PartialView("~/Views/PartialViews/TasksList.cshtml", new TasksListViewModel(projectId));
-        }
-        
+        } 
         public ActionResult AddProject(string deadline, string name)
         {
             var db = new ApplicationDbContext();
             try
             {
-                var date = DateTime.Parse(deadline);
-                db.Projects.Add(new Project
-                {
-                    Deadline = date,
-                    Name = name,
-                    UserId = Helper.GetCurrentUserId().ToString(),
-                });
-                db.SaveChanges();
+                    var date = DateTime.Parse(deadline);
+                    db.Projects.Add(new Project
+                    {
+                        Deadline = date,
+                        Name = name,
+                        UserId = Helper.GetCurrentUserId().ToString(),
+                    });
+                    db.SaveChanges();
             }
             catch(System.FormatException)
             {
 
-            }
-            
+            }          
             return PartialView("~/Views/PartialViews/ProjectsList.cshtml", new ProjectsListViewModel());
         }
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+        }
+
+        public ManageController()
+        {
         }
 
         public ApplicationSignInManager SignInManager

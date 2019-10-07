@@ -229,3 +229,33 @@ input::-moz-focus-inner {
     padding: 20px;
     border-radius: 10px;
 }
+.register-form {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #f4f5f7;
+    padding: 20px;
+    border-radius: 10px;
+}
+.logs-input {
+    max-width:initial;
+    width:100%;
+}
+@media (max-width: 500px) {
+    .register-form {
+        width: 350px;
+    }
+    .login-form {
+        width: 300px;
+    }
+}
+@media (max-width: 370px) {
+    .register-form {
+        width: 280px;
+    }
+
+    .login-form {
+        width: 280px;
+    }
+}

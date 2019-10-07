@@ -7,7 +7,7 @@
 @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
 <div style="display:flex; flex-direction:column; align-items:center">
-    <div class="login-form" style="">
+    <div class="login-form" >
 
 
         @Html.AntiForgeryToken()
@@ -16,14 +16,14 @@
         <div class="form-group">
             @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
             <div class="col-md-12">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "max-width:initial; width:100%" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control logs-input" })
                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
             <div class="col-md-12">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "max-width:initial; width:100%" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control logs-input" })
                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -32,7 +32,9 @@
             <div class="col-md-offset-2 col-md-12">
                 <div style="display:flex; flex-direction:row; justify-content:space-between">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="customCheck1" checked="" name="RememberMe">
+                        <input class="custom-control-input" id="customCheck1" data-val="true" data-val-required="The Remember me? field is required." id="RememberMe" name="RememberMe" type="checkbox" value="true">
+                        <input name="RememberMe" type="hidden" value="false">
+                        
                         <label class="custom-control-label" for="customCheck1">Remember Me</label>
                     </div>
                     <p> @Html.ActionLink("Sing Up", "Register") </p>
@@ -44,7 +46,7 @@
 
 
     </div>
-    <div class="form-group text-center pt-lg-3">
+    <div class="form-group text-center pt-3">
         <input type="submit" value="Log in" class="btn btn-primary" />
     </div>
 </div>

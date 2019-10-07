@@ -18,6 +18,8 @@
 
     var addProjectBtn = document.querySelector('#add-project-btn');
     addProjectBtn.addEventListener('click', () => {
+        $('#errorDatetime').hide();
+        $('#errorName').hide();
         submitBtn = document.querySelector('#submitBtn');
 
     submitBtn.addEventListener('click', () => {
@@ -26,25 +28,20 @@
         var day = $(date).attr('data-date');
         var year = $(date).attr('data-year');
         var month = $(date).attr('data-month');
-        var date = new Date(year, month, day, 2, 3, 4, 567);
+        
         var hours = document.getElementsByClassName("datepicker--time-current-hours")[0].textContent;
         var minutes = document.getElementsByClassName("datepicker--time-current-minutes")[0].textContent;
-
+        var date = new Date(year, month, day, hours, minutes, 0, 0);
         var projectName = $('#projectName').val();
-        var allNames = [];
-        @{
-            foreach(var i in Model.ProjectsList.Projects) {
-                @:allNames.push('@i.Project.Name');
-
-           }
-
-        }
+        
+        
         var dataVerification = true;
-        if (new Date() > new Date(year, month, day, hours, minutes, 0, 0)) {
+        if (year === undefined || month === undefined ||
+            day === undefined || hours == undefined || minutes == undefined || new Date() > date) {
             $('#errorDatetime').show();
             dataVerification = false;
         }
-        if ((allNames.length != 0 && allNames.indexOf(projectName) != -1) || projectName.length == 0) {
+        if (projectName.length == 0) {
             $('#errorName').show();
             dataVerification = false;
         }
