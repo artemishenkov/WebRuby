@@ -76,6 +76,41 @@
 
 </script>
 <script>
+    $(document).ready(function () {
+        $(".update-deadline-block").hover(function () {
+            var elem = $(this).children('.form-control.update-deadline.descr');
+    
+            var alert = $(this).parent().parent().prev();
+     
+            elem.show();
+        }, function () {  	
+                var elem = $(this).children('.form-control.update-deadline.descr');
+             
+                elem.hide();
+                let date = new Date($(elem).val());
+                var alert = $(this).parent().parent().prev();
+                if (date === undefined || date < new Date()) {
+                    alert.show();
+
+                }
+                else {
+                    $.ajax({
+                        method: "POST", // метод HTTP, используемый для запроса
+                        url: '@Url.Action("UpdateProjectDate", "Manage")', // строка, содержащая URL адрес, на который отправляется запрос
+                        data: { // данные, которые будут отправлены на сервер
+                            projectId: $(elem).closest('.project-form').attr('id').split('project#')[1],
+                            date: $(elem).val()
+                        },
+                    })
+                    alert.hide();
+                }
+                
+                
+        });
+    });
+
+</script>
+<script>
     $(document).on('click', '[name=projectTrash]', function () {
         var projectForm = $(this).closest('.project-form');
       var id = projectForm.attr('id').split('project#')[1];
