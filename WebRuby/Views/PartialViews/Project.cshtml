@@ -1,12 +1,16 @@
 ﻿@using WebRuby.Models
 @using WebRuby.Extension
 @model ProjectViewModel
+<div class="alert alert-dismissible alert-light update-date-error" style="display:none">
+  
+    <strong>Error!</strong>Date wasn't epdated! 
+</div>
 <div class="project-form" id="project#@Model.Project.Id">
     <div class="add-task-header" style="display:flex; flex-direction:row">
-        <div style="display:flex; flex-direction:row; align-items:center">
-            <i class="far fa-calendar-alt poster" style="margin-right:13px; font-size:30px;color:#2C3E50">
-                <span class="datepicker-here descr" data-timepicker="true" />
-            </i>
+        <div class="update-deadline-block" style="display:flex; flex-direction:row; align-items:center; justify-content:flex-start">
+            <i class="far fa-calendar-alt" style="margin-right:13px; font-size:30px;color:#2C3E50"></i>
+            <input value="@Model.LocalDeadline()" class="form-control update-deadline descr" type="datetime-local" id="@Model.Project.Id" name="date" />
+
             <input class="textinput" readonly="" style="background-color: #325D88; border:none; color:white" value="@Model.Project.Name" />
         </div>
         <div style="color:lightgray;display:flex; flex-direction:row; align-items:center; justify-content:center">
@@ -25,3 +29,10 @@
         @{Html.RenderPartial("~/Views/PartialViews/TasksList.cshtml", Model.Tasks); }
     </div>
 </div>
+
+<script>
+
+
+
+
+</script>
