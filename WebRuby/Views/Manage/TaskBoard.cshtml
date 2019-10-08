@@ -1,4 +1,4 @@
-﻿@using WebRuby.Models
+@using WebRuby.Models
 @using WebRuby.Extension
 @model TaskBoard
 @{
@@ -16,15 +16,15 @@
 </div>
 <script>
 
-    var addProjectBtn = document.querySelector('#add-project-btn');
-    addProjectBtn.addEventListener('click', () => {
+   
+    $("#add-project-btn").unbind("click").click(function () {
         $('#errorDatetime').hide();
         $('#errorName').hide();
-        submitBtn = document.querySelector('#submitBtn');
-
-    submitBtn.addEventListener('click', () => {
-
-        var date = document.getElementsByClassName("datepicker--cell datepicker--cell-day -selected-")[0];
+        
+        $("#submitBtn").unbind("click").click(function () {
+       
+    
+         var date = document.getElementsByClassName("datepicker--cell datepicker--cell-day -selected-")[0];
         var day = $(date).attr('data-date');
         var year = $(date).attr('data-year');
         var month = $(date).attr('data-month');
@@ -52,7 +52,9 @@
             form.classList.remove('open');
             popup.classList.remove('popup-open');
         }
-    });
+         });
+    
+       
     });
 
 </script>
@@ -76,18 +78,16 @@
 
 </script>
 <script>
-    $(document).ready(function () {
-        $(".update-deadline-block").hover(function () {
-            var elem = $(this).children('.form-control.update-deadline.descr');
-    
-            var alert = $(this).parent().parent().prev();
-     
-            elem.show();
-        }, function () {  	
-                var elem = $(this).children('.form-control.update-deadline.descr');
+    $(document).on('click', '.update-deadline-block', function () {
+        var elem = $(this).children('.form-control.update-deadline.descr');
+        var alert = $(this).parent().parent().prev();
+        elem.show();
+        $(elem).focus()
+        $(elem).blur(function () {
+                
              
-                elem.hide();
-                let date = new Date($(elem).val());
+                $(this).hide();
+                let date = new Date($(this).val());
                 var alert = $(this).parent().parent().prev();
                 if (date === undefined || date < new Date()) {
                     alert.show();
@@ -98,16 +98,17 @@
                         method: "POST", // метод HTTP, используемый для запроса
                         url: '@Url.Action("UpdateProjectDate", "Manage")', // строка, содержащая URL адрес, на который отправляется запрос
                         data: { // данные, которые будут отправлены на сервер
-                            projectId: $(elem).closest('.project-form').attr('id').split('project#')[1],
-                            date: $(elem).val()
+                            projectId: $(this).closest('.project-form').attr('id').split('project#')[1],
+                            date: $(this).val()
                         },
                     })
                     alert.hide();
                 }
-                
-                
         });
     });
+  
+    
+        
 
 </script>
 <script>
@@ -119,7 +120,7 @@
     });
 
     $(document).on('click', '[name=projectEdit]', function () {
-       var input = $(this).parent().prev().children('input');
+        var input = $(this).parent().prev().children('.textinput');
         input.removeAttr('readonly');
 
         $(input).focus();
