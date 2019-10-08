@@ -97,6 +97,28 @@ namespace WebRuby.Controllers
             db.SaveChanges();
             return PartialView("~/Views/PartialViews/TasksList.cshtml", new TasksListViewModel(projectId));
         } 
+        public EmptyResult UpdateProjectDate(int projectId, string date)
+        {
+            //"2013-03-18T13:00"
+            ApplicationDbContext db = new ApplicationDbContext();
+            
+            var project = db.Projects.Where(m => m.Id == projectId).FirstOrDefault();
+            try
+            {
+                var deadline = DateTime.Parse(date);
+                if (project != null && deadline > DateTime.Now)
+                {
+                    project.Deadline = deadline;
+                    db.SaveChanges();
+                }
+            }
+            catch(System.FormatException)
+            {
+
+            }
+           
+            return new EmptyResult();
+        }
         public ActionResult AddProject(string deadline, string name)
         {
             var db = new ApplicationDbContext();
